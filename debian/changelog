@@ -1,0 +1,18 @@
+libimagequant (2.12.2-1.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix the baseline violation on i386. (Closes: #919755)
+
+ -- Adrian Bunk <bunk@debian.org>  Thu, 07 Feb 2019 20:39:50 +0200
+
+libimagequant (2.12.2-1) unstable; urgency=medium
+
+  * New upstream version
+
+ -- Andreas Tille <tille@debian.org>  Wed, 05 Dec 2018 15:12:38 +0100
+
+libimagequant (2.12.1-1) unstable; urgency=medium
+
+  * Initial release (Closes: #908278)
+
+ -- Andreas Tille <tille@debian.org>  Sat, 08 Sep 2018 08:28:22 +0200
