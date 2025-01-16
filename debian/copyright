@@ -9,13 +9,13 @@ License: GPL-3.0+
 Files: pam.h
 Copyright: 1989, 1991 Jef Poskanzer
            1997       Greg Roelofs
-Commenst: MIT Old Style
 License: MIT
+Comment: MIT Old Style
 
 Files: example.c
 Copyright: ?
-Comments: CC0 public domain
 License: CC0
+Comment: CC0 public domain
 
 Files: debian/*
 Copyright: 2018 Herbert Parentes Fortes Neto <hpfn@debian.org>
@@ -48,4 +48,3 @@ License: GPL-3.0+
  .
  On Debian systems, the complete text of the GNU General
  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
-
