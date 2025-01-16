@@ -19,7 +19,7 @@ JNIDLL=libimagequant.dll
 JNIDLLIMP=libimagequant_dll.a
 JNIDLLDEF=libimagequant_dll.def
 
-OBJS = pam.o mediancut.o blur.o mempool.o kmeans.o nearest.o libimagequant.o
+OBJS = pam.o mediancut.o blur.o remap.o mempool.o kmeans.o nearest.o libimagequant.o
 SHAREDOBJS = $(subst .o,.lo,$(OBJS))
 
 JAVACLASSES = org/pngquant/LiqObject.class org/pngquant/PngQuant.class org/pngquant/Image.class org/pngquant/Result.class
@@ -65,7 +65,7 @@ libimagequant.dylib: $(SHAREDOBJS)
 $(OBJS): $(wildcard *.h) config.mk
 
 $(JNILIB): $(JAVAHEADERS) $(STATICLIB) org/pngquant/PngQuant.c
-	$(CC) -g $(CFLAGS) $(LDFLAGS) $(JAVAINCLUDE) -shared -o $@ $(STATICLIB) org/pngquant/PngQuant.c
+	$(CC) -g $(CFLAGS) $(LDFLAGS) $(JAVAINCLUDE) -shared -o $@ org/pngquant/PngQuant.c $(STATICLIB)
 
 $(JNIDLL) $(JNIDLLIMP): $(JAVAHEADERS) $(OBJS) org/pngquant/PngQuant.c
 	$(CC) -fPIC -shared -I. $(JAVAINCLUDE) -o $(JNIDLL) $^ $(LDFLAGS) -Wl,--out-implib,$(JNIDLLIMP),--output-def,$(JNIDLLDEF)
@@ -93,7 +93,7 @@ cargo:
 	cargo test
 
 example: example.c lodepng.h lodepng.c $(STATICLIB)
-	$(CC) -g $(CFLAGS) -Wall example.c $(STATICLIB) -o example
+	$(CC) -g $(CFLAGS) -Wall example.c $(STATICLIB) -o example -lm
 
 lodepng.h:
 	curl -o lodepng.h -L https://raw.githubusercontent.com/lvandeve/lodepng/master/lodepng.h
@@ -104,6 +104,7 @@ lodepng.c:
 clean:
 	rm -f $(OBJS) $(SHAREDOBJS) $(SHAREDLIBVER) $(SHAREDLIB) $(STATICLIB) $(TARFILE) $(DLL) '$(DLLIMP)' '$(DLLDEF)'
 	rm -f $(JAVAHEADERS) $(JAVACLASSES) $(JNILIB) example
+	rm -rf target rust-api/target rust-sys/target
 
 distclean: clean
 	rm -f config.mk
@@ -114,7 +115,7 @@ install: all $(PKGCONFIG)
 	install -d $(DESTDIR)$(PKGCONFIGDIR)
 	install -d $(DESTDIR)$(INCLUDEDIR)
 	install -m 644 $(STATICLIB) $(DESTDIR)$(LIBDIR)/$(STATICLIB)
-	install -m 644 $(SHAREDLIBVER) $(DESTDIR)$(LIBDIR)/$(SHAREDLIBVER)
+	install -m 755 $(SHAREDLIBVER) $(DESTDIR)$(LIBDIR)/$(SHAREDLIBVER)
 	ln -sf $(SHAREDLIBVER) $(DESTDIR)$(LIBDIR)/$(SHAREDLIB)
 	install -m 644 $(PKGCONFIG) $(DESTDIR)$(PKGCONFIGDIR)/$(PKGCONFIG)
 	install -m 644 libimagequant.h $(DESTDIR)$(INCLUDEDIR)/libimagequant.h
@@ -133,7 +134,7 @@ ifeq ($(filter %clean %distclean, $(MAKECMDGOALS)), )
 endif
 
 $(PKGCONFIG): config.mk
-	sed 's|PREFIX|$(PREFIX)|;s|VERSION|$(VERSION)|' < imagequant.pc.in > $(PKGCONFIG)
+	sed 's|@PREFIX@|$(PREFIX)|;s|@VERSION@|$(VERSION)|' < imagequant.pc.in > $(PKGCONFIG)
 
 .PHONY: all static shared clean dist distclean dll java cargo
 .DELETE_ON_ERROR:

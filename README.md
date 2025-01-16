@@ -7,9 +7,8 @@ It's powering [pngquant2](https://pngquant.org).
 
 Libimagequant is dual-licensed:
 
-* For Free/Libre Open Source Software it's available under [GPL v3 or later](https://raw.github.com/ImageOptim/libimagequant/master/COPYRIGHT) with additional copyright notices for older parts of the code.
-
-* For use in non-GPL software (e.g. closed-source or App Store distribution) please ask kornel@pngquant.org for a commercial license.
+* For Free/Libre Open Source Software it's available under GPL v3 or later with additional [copyright notices](https://raw.github.com/ImageOptim/libimagequant/master/COPYRIGHT) for older parts of the code.
+* For use in closed-source software, AppStore distribution, and other non-GPL uses, you can [obtain a commercial license](https://supso.org/projects/pngquant). Feel free to ask kornel@pngquant.org for details and custom licensing terms if you need them.
 
 ## Download
 
@@ -50,10 +49,23 @@ On Windows run `make java-dll` and it'll create `libimagequant.dll` instead.
 
 ### Compiling on Windows/Visual Studio
 
-The library can be compiled with any C compiler that has at least basic support for C99 (GCC, clang, ICC, C++ Builder, even Tiny C Compiler), but Visual Studio 2012 and older are not up to date with the 1999 C standard. There are 2 options for using `libimagequant` on Windows:
+The library can be compiled with any C compiler that has at least basic support for C99 (GCC, clang, ICC, C++ Builder, even Tiny C Compiler), but Visual Studio 2012 and older are not up to date with the 1999 C standard. Use Visual Studio **2015** and the [MSVC-compatible branch of the library](https://github.com/ImageOptim/libimagequant/tree/msvc).
 
- * Use Visual Studio **2015** and an [MSVC-compatible branch of the library](https://github.com/ImageOptim/libimagequant/tree/msvc)
- * Or use GCC from [MinGW](http://www.mingw.org) or [MSYS2](http://www.msys2.org/). Use GCC to build `libimagequant.a` (using the instructions above for Unix) and add it along with `libgcc.a` (shipped with the MinGW compiler) to your VC project.
+To build on Windows, install CMake and use it to generate a makefile/project for your build system.
+
+Build instructions
+
+    mkdir build
+    cd build
+    cmake ..
+    cmake --build .
+
+To generate a 64-bit Visual Studio project instead:
+
+    mkdir build
+    cd build
+    cmake -G "Visual Studio 15 2017 Win64" ..
+    cmake --build .
 
 ### Building as shared library
 
@@ -303,7 +315,7 @@ Freeing `liq_result` also frees any `liq_palette` obtained from it.
 
     liq_error liq_set_speed(liq_attr* attr, int speed);
 
-Higher speed levels disable expensive algorithms and reduce quantization precision. The default speed is `3`. Speed `1` gives marginally better quality at significant CPU cost. Speed `10` has usually 5% lower quality, but is 8 times faster than the default.
+Higher speed levels disable expensive algorithms and reduce quantization precision. The default speed is `4`. Speed `1` gives marginally better quality at significant CPU cost. Speed `10` has usually 5% lower quality, but is 8 times faster than the default.
 
 High speeds combined with `liq_set_quality()` will use more colors than necessary and will be less likely to meet minimum required quality.
 
@@ -326,15 +338,13 @@ Returns the value set by `liq_set_speed()`.
 
     liq_error liq_set_min_opacity(liq_attr* attr, int min);
 
-Alpha values higher than this will be rounded to opaque. This is a workaround for Internet Explorer 6, but because this browser is not used any more, this option is deprecated and will be removed. The default is `255` (no change).
-
-Returns `LIQ_VALUE_OUT_OF_RANGE` if the value is outside the 0-255 range.
+This was a workaround for Internet Explorer 6, but because this browser is not used any more, this option has been deprecated and removed.
 
 ----
 
     int liq_get_min_opacity(liq_attr* attr);
 
-Returns the value set by `liq_set_min_opacity()`.
+This function has been deprecated.
 
 ----
 
@@ -667,7 +677,9 @@ The library needs to sort unique colors present in the image. Although the sorti
 
 ### OpenMP
 
-The library will parallelize some operations if compiled with OpenMP.
+The library can parallelize some operations if compiled with OpenMP.
+
+GCC 9 or later is required for correct OpenMP support. Older compilers *will cause bugs* when OpenMP is enabled.
 
 You must not increase number of maximum threads after `liq_image` has been created, as it allocates some per-thread buffers.
 

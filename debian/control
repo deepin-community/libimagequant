@@ -1,12 +1,12 @@
 Source: libimagequant
 Maintainer: Debian PhotoTools Maintainers <pkg-phototools-devel@lists.alioth.debian.org>
-Uploaders: Herbert Parentes Fortes Neto <hpfn@debian.org>,
-           Andreas Tille <tille@debian.org>
+Uploaders: Andreas Tille <tille@debian.org>,
+           Barak A. Pearlmutter <bap@debian.org>
 Section: graphics
 Priority: optional
-Build-Depends: debhelper (>= 11),
-               d-shlibs
-Standards-Version: 4.2.1
+Build-Depends: debhelper-compat (= 13), d-shlibs, debhelper
+Standards-Version: 4.6.2
+Rules-Requires-Root: no
 Vcs-Browser: https://salsa.debian.org/debian-phototools-team/libimagequant
 Vcs-Git: https://salsa.debian.org/debian-phototools-team/libimagequant.git
 Homepage: https://github.com/ImageOptim/libimagequant
