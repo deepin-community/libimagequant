@@ -1,3 +1,44 @@
+libimagequant (2.18.0-1) unstable; urgency=medium
+
+  * New upstream version
+  * d/watch:
+     - Make sure to fetch only version 2.x series since 4.x is
+       rewritten in rust language
+     - Fix download name
+  * d/rules: add /usr/share/dpkg/buildtools.mk
+    Closes: #944439
+  * Standards-Version: 4.6.2 (routine-update)
+
+ -- Andreas Tille <tille@debian.org>  Tue, 14 Nov 2023 09:37:09 +0100
+
+libimagequant (2.17.0-1) unstable; urgency=medium
+
+  [ Barak A. Pearlmutter ]
+  * Set debhelper-compat version in Build-Depends.
+  * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository,
+    Repository-Browse.
+  * Fix field name typos in debian/copyright (Commenst => Comment, Comments =>
+    Comment).
+  * Get $(DEB_HOST_MULTIARCH) defined in debian/rules
+  * Set build-depends-package in debian/*.symbols file
+  * New upstream version
+  * Enable openmp (closes: #919757)
+  * Rules don't require root
+  * Remove Herbert Parentes Fortes Neto from uploaders (closes: #986943)
+    - Thanks for your work on Debian, Herbert!
+  * Merge patch from Helmut Grohne <helmut@subdivi.de>
+    - Fix FTCBFS: (Closes: #944439)
+    - Pass a suitable CC to the hand-written configure.
+    - Force decision for SSE based on HOST arch
+
+  [ Andreas Tille ]
+  * Add Barak A. Pearlmutter as additional Uploader
+  * Drop default debian/gbp.conf
+  * Add salsa-ci file (routine-update)
+  * Add missing build dependency on dh addon.
+
+ -- Andreas Tille <tille@debian.org>  Mon, 10 Jan 2022 16:26:40 +0100
+
 libimagequant (2.12.2-1.1) unstable; urgency=medium
 
   * Non-maintainer upload.

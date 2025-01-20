@@ -1,4 +1,5 @@
 libimagequant.so.0 libimagequant0 #MINVER#
+* Build-Depends-Package: libimagequant-dev
  liq_attr_copy@Base 2.11.10
  liq_attr_create@Base 2.11.10
  liq_attr_create_with_allocator@Base 2.11.10
